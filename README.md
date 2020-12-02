@@ -13,7 +13,7 @@
   Enter discogs url:
   https://www.discogs.com/search/?q=kacey+musgraves+golden+hour&type=all
   Fetching data from https://www.discogs.com/search/?q=kacey+musgraves+golden+hour&type=all.
-  Data saved to file C:\Users\amand\source\repos\webbie\webbie\bin\Debug\netcoreapp3.1\image-sources\discogs-2d63.txt
+  Data saved to file {YOUR_PATH}\bin\Debug\netcoreapp3.1\image-sources\discogs-{RANDOMLY GENERATED NUMBER}.txt
   Analyzing html...
   Number of images found: 19
   https://img.discogs.com/6FbuAJqyghOFaOnhi7rCFFlnAFk=/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11776682-1546028719-8940.jpeg.jpg
