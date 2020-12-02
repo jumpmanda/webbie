@@ -1,8 +1,11 @@
 # webbie
-.NET Core 3.1 Console app to web crawl for images
+##.NET Core 3.1 Console app to web crawl for images
+
+
 
  Enter Discogs search results page URL and retrieve image source URLs
  
+```
  Example output: 
  
   Starting program.
@@ -31,3 +34,4 @@
   https://img.discogs.com/N2f-Hh0nY1K3rGhw6XUtFBIUAYc=/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11790643-1522435461-5597.jpeg.jpg
   https://img.discogs.com/kaM2xlINdm3mwip8_eaNYqBZSHE=/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12126316-1541067013-6396.jpeg.jpg
   https://img.discogs.com/tQq4XKi8h_xTNnaX_7WrZalrIPE=/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-16107694-1603554358-5311.jpeg.jpg
+  ```
