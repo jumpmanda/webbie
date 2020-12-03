@@ -8,27 +8,38 @@ using System.Drawing;
 
 namespace webbie
 {
+
     class Program
     {
 
-        public static void SaveImageToFile(string uriPath)
+        public static void SaveImageToFile(string prefix, string uriPath)
         {
-            Console.WriteLine("Saving image to file");
+            Console.WriteLine("Saving image to file");            
             string startupPath = System.IO.Directory.GetCurrentDirectory();
+            Directory.CreateDirectory(Path.Combine(startupPath, @$"sample-images\{prefix}\"));
             string randName = Path.GetRandomFileName();           
-            string inputFile = Path.Combine(startupPath, @"sample-images\" + randName.Substring(0,randName.IndexOf(".")) + ".jpeg");
+            string outputFile = Path.Combine(startupPath, @$"sample-images\{prefix}\" + randName.Substring(0,randName.IndexOf(".")) + ".jpeg");
             using (var http = new HttpClient())
-            {
+            {                
+                http.DefaultRequestHeaders.Add("Accept", "*/*");
+
+                //Hush hush we are acting as regular users browser...
+                http.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36 Edg/87.0.664.47");
 
                 var response = http.GetAsync(uriPath).Result;                                
-                var data = response.Content.ReadAsByteArrayAsync().Result;
-                
-                //TODO: Save data to image file.
-                //using (MemoryStream stream = new MemoryStream(data)) {
-                //    Image image = Image.FromStream(stream,true,true);
-                //    image.Save(inputFile, System.Drawing.Imaging.ImageFormat.Jpeg); 
-                //}
-
+                var data = response.Content.ReadAsStreamAsync().Result;
+                try
+                {
+                    using (Image image = Image.FromStream(data))
+                    {
+                        image.Save(outputFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine($"Unexpected error saving JPEG image file. {uriPath}");
+                }
+               
             }            
         }
         
@@ -39,7 +50,9 @@ namespace webbie
             string url = Console.ReadLine();
 
             string startupPath = System.IO.Directory.GetCurrentDirectory();
-            string inputFile = Path.Combine(startupPath, @$"image-sources\discogs-{Guid.NewGuid().ToString().Substring(0,4)}.txt"); 
+            Directory.CreateDirectory(Path.Combine(startupPath, @"html-source\"));
+            string inputTitle = $"discogs-{Guid.NewGuid().ToString().Substring(0, 4)}"; 
+            string inputFile = Path.Combine(startupPath, @$"html-source\{inputTitle}.txt"); 
 
             using (var http = new HttpClient())
             {
@@ -73,13 +86,13 @@ namespace webbie
                         imageSources = imageSources.Concat(imgs);
                     }                        
                 }
-                Console.WriteLine("Number of images found: " + imageSources.Count());
-
-                Directory.CreateDirectory(Path.Combine(startupPath, @"sample-images\"));
-                foreach (var s in imageSources)
+                var imageArray = imageSources.ToArray(); 
+                Console.WriteLine("Number of images found: " + imageArray.Length);
+                
+                for(int i = 0; i < imageArray.Length; i++)
                 {
-                    //SaveImageToFile(imageSources.ToArray()[0]);
-                    Console.WriteLine(s);
+                    SaveImageToFile(inputTitle, imageArray[i]);
+                    Console.WriteLine(i + ": " + imageArray[i]);
                 }                
                 
             }
